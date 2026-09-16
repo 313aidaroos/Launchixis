@@ -93,9 +93,29 @@ h1 em { font-style: italic; color: var(--gold-2); }
   border-radius: 12px;
   cursor: pointer;
   font: inherit;
-  min-height: 118px;
+  min-height: 132px;
   display: flex;
   flex-direction: column;
+}
+
+.live {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--gold);
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.live:hover { text-decoration: underline; }
+
+.nolive {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--dim);
 }
 
 .card:hover { border-color: #2c3544; }

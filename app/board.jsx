@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { LAUNCH_STEPS } from "../lib/steps.js";
+import { LAUNCH_STEPS, liveUrl } from "../lib/steps.js";
 
 function doneCount(items) {
   return (items || []).filter((i) => i.done).length;
@@ -141,15 +141,37 @@ export default function Board({ initialLaunches = [] }) {
       <div className="family">
         {launches.map((l) => {
           const n = doneCount(l.items);
+          const href = l.live_url || liveUrl(l);
+          const host = href.replace(/^https?:\/\//, "");
           return (
-            <button
+            <div
               key={l.id}
               className={"card" + (l.id === selected ? " active" : "")}
               onClick={() => setSelected(l.id === selected ? null : l.id)}
-              type="button"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setSelected(l.id === selected ? null : l.id);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               <div className="name">{l.name}</div>
               <div className="one">{l.one_liner || "No one-liner yet."}</div>
+              {href ? (
+                <a
+                  className="live"
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {host}
+                </a>
+              ) : (
+                <span className="nolive">No live site</span>
+              )}
               <div className="dots">
                 {LAUNCH_STEPS.map((s) => {
                   const on = Boolean(
@@ -173,7 +195,7 @@ export default function Board({ initialLaunches = [] }) {
               <div className="progress">
                 <span style={{ width: `${(n / total) * 100}%` }} />
               </div>
-            </button>
+            </div>
           );
         })}
       </div>
