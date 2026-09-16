@@ -1,0 +1,9 @@
+node_modules
+.next
+.env
+.env.local
+.env*.local
+.vercel
+.vercel-project.json
+*.log
+.DS_Store
