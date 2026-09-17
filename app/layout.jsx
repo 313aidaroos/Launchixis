@@ -1,4 +1,5 @@
 import "./globals.css";
+import Cixy from "./cixy.jsx";
 
 export const metadata = {
   title: "Launchixis — Launch board",
@@ -16,7 +17,10 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Cixy />
+      </body>
     </html>
   );
 }

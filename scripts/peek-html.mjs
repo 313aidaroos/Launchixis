@@ -1,0 +1,11 @@
+const html = await (await fetch("https://launchixis.vercel.app", { cache: "no-store" })).text();
+console.log("has_Loading", html.includes("Loading board"));
+console.log("has_All companies", html.includes("All companies"));
+console.log("has_Launchixis card", html.includes(">Launchixis<"));
+console.log("has_family", html.includes("class=\"family\""));
+const start = html.indexOf("13 companies");
+const start2 = html.indexOf("14 companies");
+const start3 = html.indexOf("0 companies");
+console.log("13", start, "14", start2, "0", start3);
+const i = html.indexOf("class=\"family\"");
+console.log(html.slice(i, i + 400));

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { LAUNCH_STEPS, liveUrl } from "../lib/steps.js";
+import ProgressCard from "./progress-card.jsx";
 
 function doneCount(items) {
   return (items || []).filter((i) => i.done).length;
@@ -299,6 +300,8 @@ export default function Board({ initialLaunches = [] }) {
               placeholder="DNS he owns, App Store, legal, live Stripe — log it, keep shipping the rest."
             />
           </div>
+
+          <ProgressCard launch={current} />
         </section>
       ) : (
         <p className="lede">Click a company to work its checklist.</p>

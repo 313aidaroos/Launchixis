@@ -1,0 +1,11 @@
+const home = await fetch("https://launchixis.vercel.app", { cache: "no-store" });
+const html = await home.text();
+const api = await fetch("https://launchixis.vercel.app/api/launches", { cache: "no-store" });
+const data = await api.json();
+const names = (data.launches || []).map((l) => l.slug);
+console.log("home", home.status, html.length);
+console.log("api", api.status, "count", names.length, names.join(","));
+console.log("html_nursery", html.includes("Nursery Toons"));
+console.log("html_href", html.includes("https://nurserytoons.vercel.app"));
+console.log("html_count", (html.match(/[0-9]+ companies/) || ["none"])[0]);
+if (data.error) console.log("api_error", data.error);
