@@ -17,7 +17,7 @@ html, body {
   min-height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: "Instrument Sans", system-ui, sans-serif;
+  font-family: 'Special Elite', monospace;
   line-height: 1.45;
 }
 
@@ -45,9 +45,7 @@ header.top {
 }
 
 h1 {
-  font-family: "Instrument Serif", serif;
   font-size: clamp(26px, 4.5vw, 40px);
-  font-weight: 400;
   line-height: 1.1;
   margin-top: 8px;
 }
