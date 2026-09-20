@@ -115,7 +115,12 @@ export default function Board({ initialLaunches = [] }) {
             checklist. Checks persist. One active launch at a time.
           </p>
         </div>
-        <div className="pill">A Apixis Company</div>
+        <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <a href="/pricing" className="pill" style={{ textDecoration: "none" }}>
+            Pricing
+          </a>
+          <div className="pill">A Apixis Company</div>
+        </div>
       </header>
 
       {error ? <p className="err">{error}</p> : null}
@@ -297,7 +302,7 @@ export default function Board({ initialLaunches = [] }) {
                 note !== current.notes &&
                 patch({ id: current.id, notes: note })
               }
-              placeholder="DNS he owns, App Store, legal, live Stripe — log it, keep shipping the rest."
+              placeholder="DNS he owns, App Store, legal — log it, keep shipping the rest."
             />
           </div>
 
