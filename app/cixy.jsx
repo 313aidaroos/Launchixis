@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import CixyWardrobe from "./cixy-wardrobe.jsx";
 
 export default function Cixy() {
   const [messages, setMessages] = useState([]);
@@ -8,6 +9,7 @@ export default function Cixy() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
+  const [panel, setPanel] = useState("chat");
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -67,9 +69,34 @@ export default function Cixy() {
           <div className="cixy-header">
             <h3>Cixy · Launch Ops AI</h3>
             <p>Launch strategy, waitlists, positioning, GTM sequencing</p>
+            <div className="cixy-tabs" role="tablist" aria-label="Cixy">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={panel === "chat"}
+                className={panel === "chat" ? "is-active" : ""}
+                onClick={() => setPanel("chat")}
+              >
+                Chat
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={panel === "wardrobe"}
+                className={panel === "wardrobe" ? "is-active" : ""}
+                onClick={() => setPanel("wardrobe")}
+              >
+                Wardrobe
+              </button>
+            </div>
           </div>
 
-          <div className="cixy-messages">
+          {panel === "wardrobe" ? (
+            <div className="cixy-messages" role="tabpanel">
+              <CixyWardrobe />
+            </div>
+          ) : (
+          <div className="cixy-messages" role="tabpanel">
             {messages.length === 0 && (
               <div className="cixy-welcome">
                 <p>
@@ -105,7 +132,9 @@ export default function Cixy() {
 
             <div ref={messagesEndRef} />
           </div>
+          )}
 
+          {panel === "chat" && (
           <form onSubmit={handleSubmit} className="cixy-form">
             <input
               type="text"
@@ -118,6 +147,7 @@ export default function Cixy() {
               Send
             </button>
           </form>
+          )}
         </div>
       )}
 
@@ -153,7 +183,7 @@ export default function Cixy() {
           position: absolute;
           bottom: 80px;
           right: 0;
-          width: 380px;
+          width: min(380px, calc(100vw - 40px));
           height: 500px;
           background: white;
           border-radius: 12px;
@@ -179,6 +209,29 @@ export default function Cixy() {
           margin: 0;
           font-size: 12px;
           opacity: 0.9;
+        }
+
+        .cixy-tabs {
+          display: flex;
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        .cixy-tabs button {
+          background: transparent;
+          color: white;
+          border: 1px solid rgba(255, 255, 255, 0.45);
+          border-radius: 999px;
+          padding: 4px 10px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+
+        .cixy-tabs button.is-active {
+          background: white;
+          color: #3d2a6d;
+          border-color: white;
         }
 
         .cixy-messages {
