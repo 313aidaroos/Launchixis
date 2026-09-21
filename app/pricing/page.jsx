@@ -1,5 +1,10 @@
 "use client";
 
+import { walletBuyUrl, walletHomeUrl } from "../../lib/wallet.js";
+
+const buyHref = walletBuyUrl("/pricing");
+const walletHref = walletHomeUrl("/pricing");
+
 export default function PricingPage() {
   return (
     <div className="shell">
@@ -11,6 +16,18 @@ export default function PricingPage() {
             100 Ixis = $1. Buy Ixis in Apixis Wallet, redeem here. Paid Ixis
             never expires.
           </p>
+        </div>
+        <div className="row">
+          <a className="btn" href={buyHref} style={{ textDecoration: "none" }}>
+            Buy Ixis
+          </a>
+          <a
+            className="btn ghost"
+            href={walletHref}
+            style={{ textDecoration: "none" }}
+          >
+            Open Wallet
+          </a>
         </div>
       </header>
 
@@ -28,10 +45,6 @@ export default function PricingPage() {
           </p>
           <button className="btn" disabled>
             Redeem · 1,000 Ixis
-            <br />
-            <small style={{ fontSize: "11px", opacity: 0.7 }}>
-              Wallet connecting…
-            </small>
           </button>
         </div>
 
@@ -47,10 +60,6 @@ export default function PricingPage() {
           </p>
           <button className="btn" disabled>
             Redeem · 1,000 Ixis
-            <br />
-            <small style={{ fontSize: "11px", opacity: 0.7 }}>
-              Wallet connecting…
-            </small>
           </button>
         </div>
 
@@ -67,10 +76,6 @@ export default function PricingPage() {
           </p>
           <button className="btn" disabled>
             Redeem · 10,000 Ixis
-            <br />
-            <small style={{ fontSize: "11px", opacity: 0.7 }}>
-              Wallet connecting…
-            </small>
           </button>
         </div>
 
@@ -87,10 +92,6 @@ export default function PricingPage() {
           </p>
           <button className="btn" disabled>
             Redeem · 30,000 Ixis
-            <br />
-            <small style={{ fontSize: "11px", opacity: 0.7 }}>
-              Wallet connecting…
-            </small>
           </button>
         </div>
       </div>
@@ -107,14 +108,12 @@ export default function PricingPage() {
           </li>
           <li>
             <strong>Buy in Apixis Wallet</strong> — one account, all companies.
-            Purchase via card/bank at{" "}
-            <a href="https://wallet.apixis.dev" target="_blank" rel="noreferrer">
-              wallet.apixis.dev
-            </a>
+            Purchase via card at{" "}
+            <a href={buyHref}>apixis-wallet.vercel.app</a>
           </li>
           <li>
-            <strong>Redeem here</strong> — connect your Wallet to unlock plans
-            (integration in progress)
+            <strong>Redeem here</strong> — stays off until a Wallet session
+            exists. Launchixis does not spend Ixis in this pass.
           </li>
           <li>
             <strong>No Launchixis-owned Stripe Checkout</strong> — all payments
