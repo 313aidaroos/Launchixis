@@ -25,3 +25,18 @@ begin
     null;
   end if;
 end $$;
+
+create table if not exists public.support_tickets (
+  id uuid primary key default gen_random_uuid(),
+  email text not null,
+  subject text not null,
+  message text not null,
+  company_slug text not null default 'launchixis',
+  source_inbox text not null default 'launchixis@apixis.dev',
+  route_to text not null default 'awad@apixis.dev',
+  status text not null default 'new',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.support_tickets enable row level security;

@@ -119,6 +119,12 @@ export default function Board({ initialLaunches = [] }) {
           <a href="/pricing" className="pill" style={{ textDecoration: "none" }}>
             Pricing
           </a>
+          <a href="/support" className="pill" style={{ textDecoration: "none" }}>
+            Support
+          </a>
+          <a href="/login" className="pill" style={{ textDecoration: "none" }}>
+            Sign In
+          </a>
           <div className="pill">A Apixis Company</div>
         </div>
       </header>
