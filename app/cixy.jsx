@@ -183,7 +183,7 @@ export default function Cixy() {
           position: absolute;
           bottom: 80px;
           right: 0;
-          width: 380px;
+          width: min(380px, calc(100vw - 40px));
           height: 500px;
           background: white;
           border-radius: 12px;
