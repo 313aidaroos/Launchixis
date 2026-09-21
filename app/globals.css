@@ -234,6 +234,11 @@ textarea { min-height: 90px; resize: vertical; }
   cursor: pointer;
 }
 
+a.btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
 .btn.ghost {
   background: transparent;
   color: var(--text);

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { LAUNCH_STEPS, liveUrl } from "../lib/steps.js";
+import { walletBuyUrl } from "../lib/wallet.js";
 import ProgressCard from "./progress-card.jsx";
 
 function doneCount(items) {
@@ -116,6 +117,13 @@ export default function Board({ initialLaunches = [] }) {
           </p>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <a
+            href={walletBuyUrl("/")}
+            className="pill"
+            style={{ textDecoration: "none" }}
+          >
+            Buy Ixis
+          </a>
           <a href="/pricing" className="pill" style={{ textDecoration: "none" }}>
             Pricing
           </a>
