@@ -1,5 +1,6 @@
 import { db, ensureSeed, publicLaunch, slugify } from "../../../lib/db.js";
 import { emptyItems, mergeItems } from "../../../lib/steps.js";
+import { requireAdminUser } from "../../../lib/server-auth.js";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,11 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  const auth = await requireAdminUser();
+  if (!auth.ok) {
+    return json({ error: auth.error }, auth.status);
+  }
+
   try {
     const body = await request.json().catch(() => ({}));
     const name = String(body.name || "").trim();
@@ -66,6 +72,11 @@ export async function POST(request) {
 }
 
 export async function PATCH(request) {
+  const auth = await requireAdminUser();
+  if (!auth.ok) {
+    return json({ error: auth.error }, auth.status);
+  }
+
   try {
     const body = await request.json().catch(() => ({}));
     const id = String(body.id || "").trim();
