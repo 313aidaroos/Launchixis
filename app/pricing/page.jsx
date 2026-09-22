@@ -1,9 +1,101 @@
 "use client";
 
+import { useState } from "react";
 import { walletBuyUrl, walletHomeUrl } from "../../lib/wallet.js";
 
 const buyHref = walletBuyUrl("/pricing");
 const walletHref = walletHomeUrl("/pricing");
+
+const PRODUCTS = [
+  {
+    key: "launchixis.template.checklist",
+    name: "Launch Checklist Template",
+    ixis: 1000,
+    usd: 10,
+    desc: "One-time purchase. Complete 13-step launch template for a single Apixis-family product. Includes domain strategy, Vercel setup, auth gates, support routing.",
+  },
+  {
+    key: "launchixis.brandkit",
+    name: "Brand Kit One-off",
+    ixis: 1000,
+    usd: 10,
+    desc: 'One-time brand setup: logo guidelines, color palette (Special Elite typewriter font included), family chrome ("A Apixis Company" badge).',
+  },
+  {
+    key: "launchixis.seat.monthly",
+    name: "Launch Ops Seat",
+    ixis: 10000,
+    usd: 100,
+    recurring: true,
+    desc: "Monthly. One dedicated launch operator managing your product's board, checklist progress, blockers log, and Cixy launch AI access. Priority support from awad@apixis.dev.",
+    featured: true,
+  },
+  {
+    key: "launchixis.suite.monthly",
+    name: "Enterprise Launch Suite",
+    ixis: 30000,
+    usd: 300,
+    recurring: true,
+    desc: "Monthly. Full-service launch operations for 3+ sister companies simultaneously. Includes multi-board view, family-wide GTM sequencing, shared Cixy context.",
+  },
+];
+
+function RedeemButton({ product }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleRedeem() {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/redeem", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ productKey: product.key }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 402) {
+        // Insufficient Ixis - redirect to Buy
+        window.location.href = data.buyUrl;
+        return;
+      }
+
+      if (response.status === 401) {
+        // Not signed in
+        window.location.href = "/login";
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "redeem_failed");
+      }
+
+      // Success
+      alert(`✓ Redeemed ${product.name}! Receipt: ${data.receiptId}`);
+      window.location.reload();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div>
+      <button
+        className="btn"
+        onClick={handleRedeem}
+        disabled={loading}
+      >
+        {loading ? "Redeeming…" : `Redeem · ${product.ixis.toLocaleString()} Ixis`}
+      </button>
+      {error && <div style={{ color: "#f0c4c4", fontSize: 13, marginTop: 8 }}>{error}</div>}
+    </div>
+  );
+}
 
 export default function PricingPage() {
   return (
@@ -32,68 +124,19 @@ export default function PricingPage() {
       </header>
 
       <div className="pricing-grid">
-        <div className="pricing-card">
-          <h2>Launch Checklist Template</h2>
-          <div className="price">
-            <span className="ixis">1,000 Ixis</span>
-            <span className="usd">≈ $10</span>
+        {PRODUCTS.map((product) => (
+          <div key={product.key} className={`pricing-card${product.featured ? " featured" : ""}`}>
+            <h2>{product.name}</h2>
+            <div className="price">
+              <span className="ixis">
+                {product.ixis.toLocaleString()} Ixis{product.recurring ? "/mo" : ""}
+              </span>
+              <span className="usd">≈ ${product.usd}{product.recurring ? "/mo" : ""}</span>
+            </div>
+            <p className="pricing-desc">{product.desc}</p>
+            <RedeemButton product={product} />
           </div>
-          <p className="pricing-desc">
-            One-time purchase. Complete 13-step launch template for a single
-            Apixis-family product. Includes domain strategy, Vercel setup, auth
-            gates, support routing.
-          </p>
-          <button className="btn" disabled>
-            Redeem · 1,000 Ixis
-          </button>
-        </div>
-
-        <div className="pricing-card">
-          <h2>Brand Kit One-off</h2>
-          <div className="price">
-            <span className="ixis">1,000 Ixis</span>
-            <span className="usd">≈ $10</span>
-          </div>
-          <p className="pricing-desc">
-            One-time brand setup: logo guidelines, color palette (Special Elite
-            typewriter font included), family chrome ("A Apixis Company" badge).
-          </p>
-          <button className="btn" disabled>
-            Redeem · 1,000 Ixis
-          </button>
-        </div>
-
-        <div className="pricing-card featured">
-          <h2>Launch Ops Seat</h2>
-          <div className="price">
-            <span className="ixis">10,000 Ixis/mo</span>
-            <span className="usd">≈ $100/mo</span>
-          </div>
-          <p className="pricing-desc">
-            Monthly. One dedicated launch operator managing your product's board,
-            checklist progress, blockers log, and Cixy launch AI access. Priority
-            support from awad@apixis.dev.
-          </p>
-          <button className="btn" disabled>
-            Redeem · 10,000 Ixis
-          </button>
-        </div>
-
-        <div className="pricing-card">
-          <h2>Enterprise Launch Suite</h2>
-          <div className="price">
-            <span className="ixis">30,000 Ixis/mo</span>
-            <span className="usd">≈ $300/mo</span>
-          </div>
-          <p className="pricing-desc">
-            Monthly. Full-service launch operations for 3+ sister companies
-            simultaneously. Includes multi-board view, family-wide GTM
-            sequencing, shared Cixy context.
-          </p>
-          <button className="btn" disabled>
-            Redeem · 30,000 Ixis
-          </button>
-        </div>
+        ))}
       </div>
 
       <div className="pricing-notes">
@@ -112,8 +155,8 @@ export default function PricingPage() {
             <a href={buyHref}>apixis-wallet.vercel.app</a>
           </li>
           <li>
-            <strong>Redeem here</strong> — stays off until a Wallet session
-            exists. Launchixis does not spend Ixis in this pass.
+            <strong>Redeem here</strong> — sign in, click Redeem. If you don't
+            have enough Ixis, you'll be sent to Buy.
           </li>
           <li>
             <strong>No Launchixis-owned Stripe Checkout</strong> — all payments
