@@ -48,11 +48,14 @@ function RedeemButton({ product }) {
     setLoading(true);
     setError("");
 
+    // Client-generated attemptId: unique per click, reused on retry of same click
+    const attemptId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
     try {
       const response = await fetch("/api/redeem", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ productKey: product.key }),
+        body: JSON.stringify({ productKey: product.key, attemptId }),
       });
 
       const data = await response.json();

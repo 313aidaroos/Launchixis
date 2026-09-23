@@ -16,24 +16,38 @@ export async function POST(request) {
 
     const body = await request.json().catch(() => ({}));
     const productKey = String(body.productKey || "").trim();
+    const attemptId = String(body.attemptId || "").trim();
     
     if (!productKey) {
       return Response.json({ error: "product_key_required" }, { status: 400 });
     }
 
-    // Generate unique idempotency key per attempt (includes timestamp)
-    const idempotencyKey = `launchixis-${user.email}-${productKey}-${Date.now()}`;
+    if (!attemptId || attemptId.length > 80) {
+      return Response.json({ error: "attempt_id_required_under_80_chars" }, { status: 400 });
+    }
 
-    // Redeem: reserve → provision → capture (or release on failure)
+    // Idempotency key: user hash + product + client attemptId (no email, under 80 chars)
+    const userHash = user.email.split('@')[0].slice(0, 10);
+    const productShort = productKey.split('.').pop() || productKey;
+    const idempotencyKey = `lx-${userHash}-${productShort}-${attemptId}`.slice(0, 80);
+
+    // Redeem: reserve → provision → capture (or unprovision + release on failure)
     const result = await redeem({
       ownerEmail: user.email,
       productKey,
       idempotencyKey,
       provision: async (reservation) => {
         // Provision step: grant entitlement
-        // For Launchixis, this is currently a no-op since product definition
-        // is unclear (tool vs service). Wallet writes the entitlement; we read it.
+        // For Launchixis, product definition is unclear (tool vs service).
+        // Wallet writes the entitlement; we read it via hasEntitlement().
+        // When product is defined, this will write board access or similar.
         return { granted: true, reservationId: reservation.reservationId };
+      },
+      unprovision: async (reservation, result) => {
+        // Undo provision if capture fails
+        // Currently no local access rows to revoke; Wallet entitlement not yet written.
+        // When provision writes access, this will DELETE that row.
+        console.log(`unprovision called for ${reservation.reservationId}`);
       },
     });
 
