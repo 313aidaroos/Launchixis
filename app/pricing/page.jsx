@@ -41,61 +41,16 @@ const PRODUCTS = [
 ];
 
 function RedeemButton({ product }) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleRedeem() {
-    setLoading(true);
-    setError("");
-
-    // Client-generated attemptId: unique per click, reused on retry of same click
-    const attemptId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-
-    try {
-      const response = await fetch("/api/redeem", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ productKey: product.key, attemptId }),
-      });
-
-      const data = await response.json();
-
-      if (response.status === 402) {
-        // Insufficient Ixis - redirect to Buy
-        window.location.href = data.buyUrl;
-        return;
-      }
-
-      if (response.status === 401) {
-        // Not signed in
-        window.location.href = "/login";
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error(data.error || "redeem_failed");
-      }
-
-      // Success
-      alert(`✓ Redeemed ${product.name}! Receipt: ${data.receiptId}`);
-      window.location.reload();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
+  // Not on sale: every SKU here would take Ixis and deliver nothing yet — provision() is a no-op
+  // and there is no file, seat or access behind any key. Sells the day the product is defined.
   return (
     <div>
-      <button
-        className="btn"
-        onClick={handleRedeem}
-        disabled={loading}
-      >
-        {loading ? "Redeeming…" : `Redeem · ${product.ixis.toLocaleString()} Ixis`}
+      <button type="button" disabled className="btn ghost" aria-disabled="true">
+        Not on sale yet · {product.ixis.toLocaleString()} Ixis
       </button>
-      {error && <div style={{ color: "#f0c4c4", fontSize: 13, marginTop: 8 }}>{error}</div>}
+      <p className="muted" style={{ marginTop: 8, fontSize: "0.9em" }}>
+        We only take Ixis for things you can use today. {product.name} opens when it is ready.
+      </p>
     </div>
   );
 }

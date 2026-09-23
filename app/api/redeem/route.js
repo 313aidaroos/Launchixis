@@ -31,6 +31,12 @@ export async function POST(request) {
     const productShort = productKey.split('.').pop() || productKey;
     const idempotencyKey = `lx-${userHash}-${productShort}-${attemptId}`.slice(0, 80);
 
+    // NOT_ON_SALE: no Launchixis SKU delivers anything yet (provision is a no-op). Refuse before any hold.
+    return Response.json(
+      { error: "Launchixis products are not on sale yet — nothing to deliver, so we do not take Ixis for them." },
+      { status: 409 }
+    );
+    // eslint-disable-next-line no-unreachable
     // Redeem: reserve → provision → capture (or unprovision + release on failure)
     const result = await redeem({
       ownerEmail: user.email,
