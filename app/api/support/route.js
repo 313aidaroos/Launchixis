@@ -1,9 +1,12 @@
 import { db } from "../../../lib/db.js";
+import { limitByIp } from "../../../lib/rate-limit.js";
 import { cleanTicketInput, validateTicketInput } from "../../../lib/support.js";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(request) {
+  const limited = limitByIp(request, "support", 5);
+  if (limited) return limited;
   try {
     const body = await request.json().catch(() => ({}));
     const ticket = cleanTicketInput(body);

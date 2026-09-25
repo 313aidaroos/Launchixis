@@ -1,4 +1,5 @@
 import { serverSupabase } from "../../../../lib/server-auth.js";
+import { limitByIp } from "../../../../lib/rate-limit.js";
 import { isValidEmail, normalizeEmail } from "../../../../lib/auth.js";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +9,8 @@ function appUrl() {
 }
 
 export async function POST(request) {
+  const limited = limitByIp(request, "magic-link", 5);
+  if (limited) return limited;
   const body = await request.json().catch(() => ({}));
   const email = normalizeEmail(body.email);
   if (!isValidEmail(email)) {
