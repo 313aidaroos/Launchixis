@@ -10,11 +10,11 @@ export const dynamic = "force-dynamic";
  * The signed-in person's ONE Apixis Wallet balance (shared by every Apixis site), plus the
  * "Buy Ixis" link that goes to the Wallet and comes straight back here.
  */
-export async function GET(request: Request) {
+export async function GET(request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
-  const back = request.headers.get("referer")?.startsWith(origin) ? request.headers.get("referer")! : origin + "/";
+  const back = request.headers.get("referer")?.startsWith(origin) ? request.headers.get("referer") : origin + "/";
   const buy = buyIxisUrl("launchixis", back);
   if (!url || !key) return NextResponse.json({ available: null, buy });
   const jar = await cookies();
