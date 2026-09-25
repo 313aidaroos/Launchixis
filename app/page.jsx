@@ -27,6 +27,11 @@ async function loadLaunches() {
 }
 
 export default async function Page() {
-  const initialLaunches = await loadLaunches();
+  // A database hiccup should not take the whole board down: the board reloads
+  // from /api/launches in the browser and shows its own error there.
+  const initialLaunches = await loadLaunches().catch((e) => {
+    console.error("launches_initial_load_failed", e?.message ?? e);
+    return [];
+  });
   return <Board initialLaunches={initialLaunches} />;
 }

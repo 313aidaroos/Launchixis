@@ -1,4 +1,7 @@
 import { callCixyModel, isCixyHealthy } from "../../../lib/cixy.js";
+import { limitByIp } from "../../../lib/rate-limit.js";
+
+const MAX_CHARS = 2000;
 
 export const dynamic = "force-dynamic";
 
@@ -10,6 +13,9 @@ export async function POST(request) {
     );
   }
 
+  const limited = limitByIp(request, "cixy", 20);
+  if (limited) return limited;
+
   try {
     const body = await request.json().catch(() => ({}));
     const userMessage = String(body.message || "").trim();
@@ -19,6 +25,9 @@ export async function POST(request) {
         { error: "message_required" },
         { status: 400 }
       );
+    }
+    if (userMessage.length > MAX_CHARS) {
+      return Response.json({ error: "message_too_long" }, { status: 400 });
     }
 
     const result = await callCixyModel(userMessage);
