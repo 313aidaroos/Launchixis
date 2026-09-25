@@ -1,3 +1,4 @@
+// Change note (Claude, Sep 2026): Rate limited. See docs/LAUNCH_NOTES.md.
 import { callCixyModel, isCixyHealthy } from "../../../lib/cixy.js";
 import { limitByIp } from "../../../lib/rate-limit.js";
 
