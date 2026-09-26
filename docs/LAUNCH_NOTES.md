@@ -28,12 +28,13 @@ Each changed backend code file also starts with a one-line `Change note (Claude,
 
 | File | Change |
 |---|---|
-| `.env.example` | Added 12 key(s) the code reads that were missing: `ADMIN_EMAILS`, `ANTHROPIC_API_KEY`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`, `WALLET_API_KEY`, `APIXIS_WALLET_API_URL`, `APP_URL`, `NEXT_PUBLIC_APP_URL`, `SUPABASE_ACCESS_TOKEN`, `VERCEL_TOKEN`, `APIXIS_WALLET_API_KEY`. |
+| `.env.example` | Added 13 key(s) the code reads that were missing: `ADMIN_EMAILS`, `ANTHROPIC_API_KEY`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_URL`, `WALLET_API_KEY`, `APIXIS_WALLET_API_URL`, `APP_URL`, `NEXT_PUBLIC_APP_URL`, `ANTHROPIC_MODEL`, `SUPABASE_ACCESS_TOKEN`, `VERCEL_TOKEN`, `APIXIS_WALLET_API_KEY`. |
 | `app/api/auth/magic-link/route.js` | Rate limited. |
 | `app/api/cixy/route.js` | Rate limited. |
 | `app/api/support/route.js` | Rate limited. |
 | `app/page.jsx` | Board shows with an empty list instead of a 500 if the first load fails. No visual change. |
 | `docs/LAUNCH_NOTES.md` | This file. |
+| `lib/cixy.js` | Part of: Replace the retired Claude model so Cixy doesn't fail. |
 | `lib/rate-limit.js` | New. Per-IP limiter. |
 
 _Changes are backend and plumbing only. Pages, design and UI are not changed except where noted as a build or lint fix with no visual change._
