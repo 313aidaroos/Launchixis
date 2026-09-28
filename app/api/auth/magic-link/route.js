@@ -1,3 +1,4 @@
+// Change note (Claude, Sep 2026): Rate limited. See docs/LAUNCH_NOTES.md.
 import { serverSupabase } from "../../../../lib/server-auth.js";
 import { limitByIp } from "../../../../lib/rate-limit.js";
 import { isValidEmail, normalizeEmail } from "../../../../lib/auth.js";

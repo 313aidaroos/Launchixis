@@ -1,3 +1,4 @@
+// Change note (Claude, Sep 2026): Rate limited. See docs/LAUNCH_NOTES.md.
 import { db } from "../../../lib/db.js";
 import { limitByIp } from "../../../lib/rate-limit.js";
 import { cleanTicketInput, validateTicketInput } from "../../../lib/support.js";
