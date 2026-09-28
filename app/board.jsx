@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { LAUNCH_STEPS, liveUrl } from "../lib/steps.js";
 import { walletBuyUrl } from "../lib/wallet.js";
 import ProgressCard from "./progress-card.jsx";
+import { ApixisWalletChip } from "@/components/ApixisWalletChip";
 
 function doneCount(items) {
   return (items || []).filter((i) => i.done).length;
@@ -117,6 +118,7 @@ export default function Board({ initialLaunches = [] }) {
           </p>
         </div>
         <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+          <ApixisWalletChip />
           <a
             href={walletBuyUrl("/")}
             className="pill"

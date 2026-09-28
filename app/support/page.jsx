@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ApixisWalletChip } from "@/components/ApixisWalletChip";
 
 export default function SupportPage() {
   const [form, setForm] = useState({
@@ -57,6 +58,9 @@ export default function SupportPage() {
             Have a question or need help? Send us a message and we'll route it to
             awad@apixis.dev.
           </p>
+        </div>
+        <div className="row">
+          <ApixisWalletChip />
         </div>
       </header>
 
