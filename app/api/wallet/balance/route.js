@@ -11,8 +11,8 @@ export const dynamic = "force-dynamic";
  * "Buy Ixis" link that goes to the Wallet and comes straight back here.
  */
 export async function GET(request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.SUPABASE_ANON_KEY;
   const origin = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
   const back = request.headers.get("referer")?.startsWith(origin) ? request.headers.get("referer") : origin + "/";
   const buy = buyIxisUrl("launchixis", back);
