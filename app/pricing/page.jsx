@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { walletBuyUrl, walletHomeUrl } from "../../lib/wallet.js";
+import { ApixisWalletChip } from "@/components/ApixisWalletChip";
 
 const buyHref = walletBuyUrl("/pricing");
 const walletHref = walletHomeUrl("/pricing");
@@ -68,6 +69,7 @@ export default function PricingPage() {
           </p>
         </div>
         <div className="row">
+          <ApixisWalletChip className="lede" />
           <a className="btn" href={buyHref} style={{ textDecoration: "none" }}>
             Buy Ixis
           </a>

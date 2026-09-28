@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { SignInWithApixis } from "@/components/SignInWithApixis";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -41,6 +42,7 @@ export default function LoginPage() {
         <div>
           <div className="logo">LAUNCHIXIS</div>
           <h1>Sign In</h1>
+          <SignInWithApixis />
           <p className="lede">
             Magic link login. Enter your email — we'll send you a one-click sign-in
             link. No password needed.

@@ -1,5 +1,6 @@
 import { redeem, buyIxisUrl } from "../../../lib/apixis-wallet.ts";
 import { currentUser } from "../../../lib/server-auth.js";
+import { apixisOwner } from "@/lib/apixis-login";
 
 export const dynamic = "force-dynamic";
 
@@ -39,7 +40,7 @@ export async function POST(request) {
     // eslint-disable-next-line no-unreachable
     // Redeem: reserve → provision → capture (or unprovision + release on failure)
     const result = await redeem({
-      ownerEmail: user.email,
+      owner: (await apixisOwner(user.email)) ?? user.email,
       productKey,
       idempotencyKey,
       provision: async (reservation) => {
