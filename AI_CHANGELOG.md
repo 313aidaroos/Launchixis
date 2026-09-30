@@ -25,3 +25,7 @@ Entry format:
 
 - Copied the canonical ApixisWallet local-redirect validator and used it at login start and callback. Preserved this app’s existing Supabase adapter and routes.
 - Added regression cases for external URLs, backslashes, encoded separators/control characters and normal return destinations. No design changes.
+
+## 2026-09-30 — Claude (branch claude/awesome-newton-3tygzi)
+- Changed: `lib/apixis-login.ts` verifies with `type: "email"` (D16; this copy keeps its extra env fallbacks). `lib/apixis-wallet.ts` → SDK v3.1. `lib/apixis-world*.ts` re-synced (15 clients, 1,000 starter Ixis). Removed stale `lib/apixis-wallet.ts.bak`.
+- Why: family backend pass per Awad's 2026-09-30 decisions (ApixisWallet/AGENTS.md §0c D11–D16; live board: ApixisWallet/docs/FAMILY_STATUS.md). One SDK, one login kit, one world kit — copied from canonical, never patched by hand.
