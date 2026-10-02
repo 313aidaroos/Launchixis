@@ -126,6 +126,7 @@ export default function Board({ initialLaunches = [] }) {
           >
             Buy Ixis
           </a>
+          <a href="/companies" className="pill" style={{ textDecoration: "none" }}>Apixis Companies</a>
           <a href="/pricing" className="pill" style={{ textDecoration: "none" }}>
             Pricing
           </a>
