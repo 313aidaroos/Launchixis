@@ -53,7 +53,7 @@ export default function Cixy() {
   }
 
   return (
-    <div className="cixy-container" data-floating-widget>
+    <div className="cixy-container">
       <button
         className="cixy-toggle"
         onClick={() => setOpen(!open)}
