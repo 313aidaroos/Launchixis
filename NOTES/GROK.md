@@ -1,4 +1,10 @@
-Grok Bot (Developer Bot hub + product leads) notes. Every change Grok Bot makes to this product (code, env, database, deploys) gets a dated entry here so Claude, Hermes and Codex stay on the same page.
+## 2026-10-04 summary
+## 2026-10-04 summary
+
+- **Grok:** added the two-owner verified admin allowlist.
+- **Claude/Hermes/Codex/Juno:** Claude, Hermes, and Juno had no commits or merged PRs in this repo on 2026-10-04 CT.
+
+
 
 ## 2026-09-27 (CT) — Developer Bot (hub)
 - Wallet registration: added `launchixis` to `wallet_api_clients` in Supabase project `kzneeksminozmhnqaaun`, with `require_sso=false`.
@@ -46,3 +52,12 @@ Logged from git history and PR records, read-only. All times CT. Everything belo
 - Where: `lib/auth.js`, `lib/server-auth.js`, `app/api/auth/me/route.js`, `tests/auth.test.mjs`. Vercel env unchanged.
 - Who: Grok.
 - Undo: `git revert <squash SHA>`.
+## 2026-10-04 catch-up provenance (CT)
+
+The entries below record the day's observed commits and merged PRs. Existing detailed entries above remain the change descriptions; this section supplies exact provenance and undo pointers.
+
+### Commits
+- `6329f61` (2026-10-04T17:47:53-05:00, 313aidaroos; alaidaroosawad@gmail.com) — Owner admin allowlist: both owner emails always admin; verified email required (#19). Undo: undo via the merged PR below: git revert 6329f61.
+
+### Merged PRs
+- PR #19, merge `6329f61`, `grok/owner-admin-allowlist` → `main`, merged 2026-10-04 CT by 313aidaroos: Owner admin allowlist for alaidaroosawad@gmail.com and awad@apixis.dev. Undo: `git revert 6329f61`.
