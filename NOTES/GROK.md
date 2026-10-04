@@ -46,3 +46,11 @@ Logged from git history and PR records, read-only. All times CT. Everything belo
 - Where: `lib/auth.js`, `lib/server-auth.js`, `app/api/auth/me/route.js`, `tests/auth.test.mjs`. Vercel env unchanged.
 - Who: Grok.
 - Undo: `git revert <squash SHA>`.
+
+## 2026-10-04 (CT) — Grok Bot: Feed tab on Launchixis (PR open, NOT merged)
+- Why: Awad asked for the Socixis Social family feed as a Feed tab on every Ixis site. Awad put feed changes on hold, so this PR is for preview review only; do not merge until Awad says so.
+- What: new public `/feed` page in Launchixis's own shell (same header, footer, fonts, colors and buttons). For You is the unfiltered mixed feed from every Apixis company with source-site badges and AI labels; Following, Search · Trending and You tabs; video/photo/text posts, like, comment, follow, save, share, report, tips and boosts in Ixis. Signed-out visitors can browse; the 4th tab says "You" and shows a sign-in card (Apixis ID). Text-only posts use the site's body font, wrap long words and size to their content; media posts keep the full-height layout; feed modals sit above everything.
+- Where: `app/feed/` (page with the launch board's own header pills and footer from `app/board.jsx`, Launchixis skin, `feed.css` mapped to Launchixis tokens), `feed-client/` (shared client), `app/api/feed-session/route.js`, "Feed" pill in `app/board.jsx`, and `data-floating-widget` on the Cixy bubble (`app/cixy.jsx`) so it hides while a feed modal is open.
+- Backend: https://www.apixis.dev/api/feed. `/api/feed-session` calls POST /api/feed/session server-side with the existing `APIXIS_WORLD_KEY` + X-Apixis-Client/Sub/Email and returns the short-lived fdt_ token. No new env vars, no DB change, no SVGs.
+- Who: Grok Bot (for Awad).
+- Undo: close this PR, or `git revert <squash sha>` if it is ever merged.
