@@ -1,5 +1,19 @@
 Grok Bot (Developer Bot hub + product leads) notes. Every change Grok Bot makes to this product (code, env, database, deploys) gets a dated entry here so Claude, Hermes and Codex stay on the same page.
 
+## 2026-10-04 summary
+
+- **Grok:** added the two-owner verified admin allowlist.
+- **Claude:** merged PR #21 (`cbb79eb`) around 6:30 PM CT, adding the full-portfolio review to `NOTES/CLAUDE.md` and `AI_CHANGELOG.md` (notes/docs only).
+- **Hermes:** no 2026-10-04 commit or merged PR identified in this repository.
+- **Juno:** no 2026-10-04 commit or merged PR identified in this repository.
+
+## Catch-up correction — 2026-10-04 (CT)
+
+Claude activity was present; the earlier “no Claude activity” line was incorrect. Each item below has an undo pointer.
+
+- **Claude, 2026-10-04 6:31 PM CT — PR #21, merge `cbb79eb10ebbe70ed991d749f53af227ae1eeeb7`:** notes: Claude full-portfolio review 2026-10-04 (NOTES/CLAUDE.md, AI_CHANGELOG); added `NOTES/CLAUDE.md` and `AI_CHANGELOG.md` (notes/docs only). Undo: `git revert cbb79eb10ebbe70ed991d749f53af227ae1eeeb7`.
+- **2026-10-04 6:31 PM CT — 313aidaroos:** `notes: Claude full-portfolio review 2026-10-04 (NOTES/CLAUDE.md, AI_CHANGELOG) (#21)` landed as `cbb79eb10ebbe70ed991d749f53af227ae1eeeb7`. Where: commit `cbb79eb10ebbe70ed991d749f53af227ae1eeeb7`. Undo: `git revert cbb79eb10ebbe70ed991d749f53af227ae1eeeb7`.
+
 ## 2026-09-27 (CT) — Developer Bot (hub)
 - Wallet registration: added `launchixis` to `wallet_api_clients` in Supabase project `kzneeksminozmhnqaaun`, with `require_sso=false`.
 - Callback URLs registered: https://launchixis.vercel.app/auth/apixis/callback.
@@ -60,3 +74,12 @@ Logged from git history and PR records, read-only. All times CT. Everything belo
 - Where: feed client `FeedView.tsx` (tab label) and the shared layout section of the site's feed CSS.
 - Who: Grok Bot (for Awad). No merge, no production deploy.
 - Undo: revert this commit on the PR branch.
+## 2026-10-04 catch-up provenance (CT)
+
+The entries below record the day's observed commits and merged PRs. Existing detailed entries above remain the change descriptions; this section supplies exact provenance and undo pointers.
+
+### Commits
+- `6329f61` (2026-10-04T17:47:53-05:00, 313aidaroos; alaidaroosawad@gmail.com) — Owner admin allowlist: both owner emails always admin; verified email required (#19). Undo: undo via the merged PR below: git revert 6329f61.
+
+### Merged PRs
+- PR #19, merge `6329f61`, `grok/owner-admin-allowlist` → `main`, merged 2026-10-04 CT by 313aidaroos: Owner admin allowlist for alaidaroosawad@gmail.com and awad@apixis.dev. Undo: `git revert 6329f61`.
