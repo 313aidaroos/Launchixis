@@ -40,3 +40,11 @@ test("email validation rejects garbage and accepts real addresses", () => {
 test("normalizeEmail lowercases and trims", () => {
   assert.equal(normalizeEmail("  AwAd@Apixis.DEV "), "awad@apixis.dev");
 });
+
+test("owner emails are always admin, even when ADMIN_EMAILS lists others", () => {
+  const admins = parseAdminList("ops@apixis.dev");
+  assert.equal(isAdminEmail("ALAIDAROOSAWAD@gmail.com", admins), true);
+  assert.equal(isAdminEmail("awad@apixis.dev", admins), true);
+  assert.equal(isAdminEmail("ops@apixis.dev", admins), true);
+  assert.equal(isAdminEmail("customer@example.com", admins), false);
+});

@@ -7,6 +7,6 @@ export async function GET() {
   const user = await currentUser();
   return Response.json({
     user: user ? { id: user.id, email: user.email } : null,
-    admin: Boolean(user?.email && isAdminEmail(user.email)),
+    admin: Boolean(user?.email && user.email_confirmed_at && isAdminEmail(user.email)),
   });
 }
