@@ -40,3 +40,9 @@ Logged from git history and PR records, read-only. All times CT. Everything belo
   - `docs/LAUNCH_NOTES.md` is dated 9/25 and out of date.
   - Redeem returns 409 "not on sale" by design.
 - **This entry:** a notes-only commit that touches only `NOTES/GROK.md`. Undo: revert this commit.
+
+## 2026-10-04 (CT) — Grok: owner admin allowlist (alaidaroosawad@gmail.com, awad@apixis.dev)
+- What: Awad's rule — both owner emails are Launchixis admin as soon as they sign in with a verified email, by any method. How admin works: email allowlist `ADMIN_EMAILS` (Vercel env, already `awad@apixis.dev,alaidaroosawad@gmail.com`) via `parseAdminList()` / `isAdminEmail()` (`lib/auth.js`), used by `requireAdminUser()` for launch writes (`/api/launches`) and the `admin` flag in `/api/auth/me`. Before, the code fallback was awad@apixis.dev only, and only when the env was empty. Now both owner emails are always in the list (env adds, never removes), still case-insensitive, and admin needs a confirmed email. Nobody else's access changed. No accounts or passwords were created.
+- Where: `lib/auth.js`, `lib/server-auth.js`, `app/api/auth/me/route.js`, `tests/auth.test.mjs`. Vercel env unchanged.
+- Who: Grok.
+- Undo: `git revert <squash SHA>`.
