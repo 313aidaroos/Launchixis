@@ -1,10 +1,11 @@
 "use client";
 import { useMemo } from "react";
 import { createFeedClient } from "@/feed-client/api";
-import { FeedView, type FeedSkin } from "@/feed-client/FeedView";
+import { FeedView } from "@/feed-client/FeedView";
 
 // Launchixis skin: only Launchixis's own classes from app/globals.css (card, btn, pill, lede…). Layout in ./feed.css.
-const skin: FeedSkin = {
+/** @type {import("@/feed-client/FeedView").FeedSkin} */
+const skin = {
   tabs: "lx-feed-tabs",
   tab: "pill lx-feed-tab",
   tabActive: "lx-pill-on",
