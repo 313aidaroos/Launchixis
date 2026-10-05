@@ -96,3 +96,16 @@ The entries below record the day's observed commits and merged PRs. Existing det
 - What: squash-merge of PR #20 (feed files + Feed nav entry only); Vercel's Git integration deploys main to production.
 - Who: Grok Bot (for Awad).
 - Undo: `git revert <squash sha of PR #20>` on main and push (the squash sha is on the PR page and in /workspace/feed/STATUS.md), or in Vercel promote the previous production deployment (instant rollback) and then revert.
+
+## 2026-10-04 (CT) — Grok (Launchixis Lead): Cixy brain fixed
+- **Why Cixy said "resting":** production logs showed `Anthropic API error: 400 invalid_request_error` on every `/api/cixy` call. `lib/cixy.js` sent `anthropic-version: 2024-06-15`, and Anthropic rejects that with "is not a valid version". The key (`ANTHROPIC_API_KEY`, updated 10/4) and the model `claude-sonnet-5` are both fine.
+- **Second bug, caught in testing:** `claude-sonnet-5` returns a thinking block first, so reading `content[0].text` would give an empty reply.
+- **What changed** (`lib/cixy.js` only):
+  - The header is now `2023-06-01`.
+  - The model is `AI_MODEL`, then `ANTHROPIC_MODEL`, then `claude-sonnet-5`.
+  - The reply joins only the `text` blocks.
+  - The shared persona (`lib/apixis-cixy.js`, v2 from #22) is untouched.
+- **Env:** none changed. Launchixis has no `AI_MODEL` set, and the default is `claude-sonnet-5`.
+- **Verified:** a local call with the shared key returned a real answer, and `tests/cixy.test.mjs` passes 4/4. Production smoke test is noted below once deployed.
+- **Who:** Grok (Launchixis Lead), at Developer Bot's request for Awad.
+- **Undo:** `git revert` the squash merge of branch `grok/cixy-anthropic-version`.
