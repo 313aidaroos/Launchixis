@@ -73,12 +73,12 @@ export default function Cixy() {
             {messages.length === 0 && (
               <div className="cixy-welcome">
                 <p>
-                  <strong>As-salamu alaykum!</strong> I'm Cixy, your launch operations
+                  <strong>Hello!</strong> I'm Cixy, your launch operations
                   expert. Ask me about waitlist strategy, domain positioning, GTM timing,
                   or Vercel/GitHub setup.
                 </p>
                 <p className="cixy-hint">
-                  Insha'Allah, let's ship this launch, one step at a time.
+                  Let's ship this launch, one step at a time.
                 </p>
               </div>
             )}
