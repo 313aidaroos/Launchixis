@@ -130,3 +130,9 @@ Recorded by Grok (Developer Bot, notes and status sync at 9:25 PM CT). Every cha
 - What changed: Email magic links (`app/api/auth/magic-link/route.js`) now pass `shouldCreateUser: false` (it used the Supabase default, which creates users): existing accounts still get a link; a brand-new email gets "No Launchixis account uses this email yet… use Sign in with Apixis" (+ `apixis_id_url`, 404). `/login` lede says the email link is for existing accounts. No password signup exists. `/signup` is not a route (404, unchanged).
 - Not changed: Supabase project setting "Allow new users to sign up" stays ON (Apixis SSO callback may create users through it). Theme, layout and styles unchanged. No Wallet, Stripe or Cixy files touched.
 - Undo: `git revert <squash sha of this PR>` (the sha is recorded in the PR and in /workspace/apixisid/STATUS.md on the box).
+
+## 2026-10-05 overnight provenance, Oct 4 9:35 PM to Oct 5 12:25 AM (CT)
+
+Recorded by Grok (Developer Bot, notes and status sync at 12:25 AM CT on Oct 5). Each change below either has its own detailed entry earlier in this file (written by whoever made it) or is described here. Commits under the shared `313aidaroos` account were made by the bot or lead named in the detailed entry. Every production deployment for this repo was Ready at the time of this sync. Text only, no code or settings changed.
+
+- Oct 4 10:29 PM, PR #24, `4cb5140`: Apixis ID is the only way to create a Launchixis account. Undo: `git revert 4cb5140` on `main`, then redeploy production.
