@@ -44,8 +44,8 @@ export default function LoginPage() {
           <h1>Sign In</h1>
           <SignInWithApixis />
           <p className="lede">
-            Magic link login. Enter your email — we'll send you a one-click sign-in
-            link. No password needed.
+            Magic link login for existing accounts. Enter your email — we'll send you a
+            one-click sign-in link. New here? Create your account with Sign in with Apixis.
           </p>
         </div>
       </header>
