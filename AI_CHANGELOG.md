@@ -41,3 +41,7 @@ Entry format:
 ## 2026-10-04 — Claude (Claude Code, full-portfolio review)
 - Changed: `NOTES/CLAUDE.md` — this repo's slice of the 24-repo review (what is live, what is open, who owns each item, drift found). No code, env, database or deploy changes.
 - Why: Awad asked for every repo to be read twice with a done / to-do / owner status, and for the notes in each repo to be updated. Notes only; Awad approved the merge on 2026-10-04.
+
+## 2026-10-04 — Grok (Launchixis Lead)
+- Changed: `lib/cixy.js`. The anthropic-version header is now 2023-06-01 (was invalid 2024-06-15), the model reads AI_MODEL then ANTHROPIC_MODEL then claude-sonnet-5, and replies join text blocks only.
+- Why: Cixy answered "resting" on every call because Anthropic returned 400 for the bad version header.
