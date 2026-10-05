@@ -124,3 +124,9 @@ Recorded by Grok (Developer Bot, notes and status sync at 9:25 PM CT). Every cha
 - 7:17 PM, PR #20, `eb0f2c6`: Feed tab: Socixis Social family feed at /feed. Undo: `git revert eb0f2c6` on `main`, then redeploy production.
 - 7:21 PM, PR #23, `d6feb77`: Cixy: fix invalid anthropic-version so the AI brain answers. Undo: `git revert d6feb77` on `main`, then redeploy production.
 - 7:22 PM, `9068100`: NOTES: Cixy fix merged + prod smoke (Grok). Undo: nothing to undo in code; delete or edit the note text.
+
+## 2026-10-04 (CT) — Grok: new accounts only through Apixis ID (branch `grok/apixis-id-only-signup`)
+- Approval: Awad said go at 10:00 PM CT, Oct 4 2026 ("every Ixis product must allow NEW account creation only through Apixis ID", the shared Wallet SSO at apixis-wallet.vercel.app/sso/authorize).
+- What changed: Email magic links (`app/api/auth/magic-link/route.js`) now pass `shouldCreateUser: false` (it used the Supabase default, which creates users): existing accounts still get a link; a brand-new email gets "No Launchixis account uses this email yet… use Sign in with Apixis" (+ `apixis_id_url`, 404). `/login` lede says the email link is for existing accounts. No password signup exists. `/signup` is not a route (404, unchanged).
+- Not changed: Supabase project setting "Allow new users to sign up" stays ON (Apixis SSO callback may create users through it). Theme, layout and styles unchanged. No Wallet, Stripe or Cixy files touched.
+- Undo: `git revert <squash sha of this PR>` (the sha is recorded in the PR and in /workspace/apixisid/STATUS.md on the box).
