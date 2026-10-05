@@ -109,3 +109,9 @@ The entries below record the day's observed commits and merged PRs. Existing det
 - **Verified:** a local call with the shared key returned a real answer, and `tests/cixy.test.mjs` passes 4/4. Production smoke test is noted below once deployed.
 - **Who:** Grok (Launchixis Lead), at Developer Bot's request for Awad.
 - **Undo:** `git revert` the squash merge of branch `grok/cixy-anthropic-version`.
+
+## 2026-10-04 7:25 PM CT — Grok (Launchixis Lead): Cixy fix merged + prod smoke
+- What: squash-merged PR #23 → main `d6feb77` (lib/cixy.js: anthropic-version 2023-06-01, model from AI_MODEL/ANTHROPIC_MODEL with default claude-sonnet-5, reply joins only text blocks).
+- Prod smoke: POST https://launchixis.vercel.app/api/cixy {"message":"hi"} returned a real Cixy greeting (no "resting" fallback). /feed 200, / 200.
+- Env: no change. ANTHROPIC_API_KEY already set; AI_MODEL not set (code default covers it).
+- Undo: `git revert d6feb77` (Cixy goes back to the broken 2024-06-15 header).
