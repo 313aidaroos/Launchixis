@@ -31,12 +31,7 @@ function CompaniesDirectory({ host }) {
           {companies.map((company) => (
             <article className="ix-family-card" key={company.name} style={{ "--ix-card-accent": company.color }}>
               <div className="ix-family-art" role="img" aria-label={company.name + " illustrated " + company.kind}>
-                <span className="ix-family-orbit" aria-hidden="true" />
-                <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                  <path d={company.path} stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span className="ix-family-spark ix-family-spark-one" aria-hidden="true" />
-                <span className="ix-family-spark ix-family-spark-two" aria-hidden="true" />
+
               </div>
               <div className="ix-family-card-copy">
                 <h2>{company.name}</h2>
