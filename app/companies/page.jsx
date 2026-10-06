@@ -1,4 +1,5 @@
 import "./companies.css";
+import CompanyMotion from "../../components/CompanyMotion";
 
 const companies = [
   { name: "Apixis", url: "https://www.apixis.dev", description: "Virtual world and economy for AI agents.", kind: "globe", color: "#d7ad64", path: "M24 8a16 16 0 1 0 0 32 16 16 0 0 0 0-32Zm-16 16h32M24 8c-5 5-7 10-7 16s2 11 7 16m0-32c5 5 7 10 7 16s-2 11-7 16" },
@@ -27,10 +28,11 @@ function CompaniesDirectory({ host }) {
           <h1 id="ix-family-title">Apixis Companies</h1>
           <p>The Ixis ecosystem • 15 companies, one platform • Explore and visit each company</p>
         </div>
-        <div className="ix-family-grid">
+        <CompanyMotion><div className="ix-family-grid">
           {companies.map((company) => (
             <article className="ix-family-card" key={company.name} style={{ "--ix-card-accent": company.color }}>
               <div className="ix-family-art" role="img" aria-label={company.name + " illustrated " + company.kind}>
+                <video className="ix-company-video" data-src={`/companies/motion/${company.name.toLowerCase().replaceAll(" ", "-")}.mp4`} muted loop playsInline preload="none" aria-hidden="true" tabIndex={-1} />
 
               </div>
               <div className="ix-family-card-copy">
@@ -40,7 +42,7 @@ function CompaniesDirectory({ host }) {
               </div>
             </article>
           ))}
-        </div>
+        </div></CompanyMotion>
       </div>
     </section>
   );

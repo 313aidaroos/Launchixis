@@ -63,3 +63,9 @@ Owner requested the assessment improvements and merge. Added a private admin ope
 
 - Changed: removed the SVG badges and unused decorative orbit/spark markup from company cards at the owner's request. Original company images remain intact.
 - Animation status: prepared five image references for Higgsfield; all five generation submissions were rejected for insufficient credits. Zero video jobs were created. No placeholder videos or simulated SVG animations were added.
+
+## 2026-10-05 — Codex: reuse existing Higgsfield company animations
+
+- Corrected the previous generation blocker: owner pointed out the animations already existed. Found six completed Higgsfield jobs matching all 15 current company illustrations; reused them without new generation.
+- Changed: cropped the sprite videos at their actual panel boundaries and optimized fifteen silent H.264 clips. Added visible-card playback, pause/resume with a saved preference, background-tab pausing, reduced-motion/data-saver fallbacks, and original-image fallback on loading or video failure. Company card artwork contains no SVG.
+- Why: complete the owner's requested company animations while preserving the approved artwork and avoiding duplicate generation.
