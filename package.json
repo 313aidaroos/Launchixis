@@ -7,15 +7,37 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test tests/*.test.mjs"
+    "test": "npm run test:unit && npm run test:sql",
+    "test:sql": "node --test supabase/tests/*.test.mjs",
+    "test:integration": "node --test tests/integration/*.test.mjs",
+    "lint": "eslint app components lib feed-client tests --quiet",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build && npm run test:integration",
+    "seed": "node scripts/seed.mjs",
+    "test:unit": "node --experimental-strip-types --test tests/*.test.mjs lib/__tests__/*.test.mjs",
+    "postbuild": "node scripts/verify-ci.mjs"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.5.1",
-    "@supabase/supabase-js": "^2.45.0",
-    "@types/node": "^26.6.2",
-    "next": "14.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "typescript": "^7.0.2"
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.116.0",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@eslint/js": "9.39.5",
+    "@types/node": "26.6.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@typescript-eslint/parser": "8.71.1",
+    "eslint": "9.39.5",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=22.18.0"
   }
 }

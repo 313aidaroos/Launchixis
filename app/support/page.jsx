@@ -10,6 +10,7 @@ export default function SupportPage() {
     message: "",
   });
   const [sent, setSent] = useState(false);
+  const [ticketId, setTicketId] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -39,6 +40,8 @@ export default function SupportPage() {
         throw new Error(data.error || "request_failed");
       }
 
+      const data = await response.json();
+      setTicketId(data.ticket.id);
       setSent(true);
       setForm({ email: "", subject: "", message: "" });
     } catch (err) {
@@ -55,8 +58,7 @@ export default function SupportPage() {
           <div className="logo">LAUNCHIXIS</div>
           <h1>Support</h1>
           <p className="lede">
-            Have a question or need help? Send us a message and we'll route it to
-            awad@apixis.dev.
+            Have a question or need help? Send a request to the Launchixis support queue. An administrator will review it.
           </p>
         </div>
         <div className="row">
@@ -66,10 +68,9 @@ export default function SupportPage() {
 
       {sent && (
         <div className="support-success">
-          <h2>Message sent</h2>
+          <h2>Request received</h2>
           <p>
-            Your support request has been received and routed to awad@apixis.dev.
-            We'll respond to your email as soon as possible.
+            Your request is saved in our support queue. Keep this reference: {ticketId}. An administrator can use your email to follow up.
           </p>
           <button
             onClick={() => setSent(false)}

@@ -1,136 +1,42 @@
 "use client";
-
-import { useState } from "react";
-import { walletBuyUrl, walletHomeUrl } from "../../lib/wallet.js";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { walletBuyUrl } from "../../lib/wallet.js";
+import { CHECKLIST_PRODUCT } from "../../lib/product.js";
 import { ApixisWalletChip } from "@/components/ApixisWalletChip";
-
 const buyHref = walletBuyUrl("/pricing");
-const walletHref = walletHomeUrl("/pricing");
-
-const PRODUCTS = [
-  {
-    key: "launchixis.template.checklist",
-    name: "Launch Checklist Template",
-    ixis: 1000,
-    usd: 10,
-    desc: "One-time purchase. Complete 13-step launch template for a single Apixis-family product. Includes domain strategy, Vercel setup, auth gates, support routing.",
-  },
-  {
-    key: "launchixis.brandkit",
-    name: "Brand Kit One-off",
-    ixis: 1000,
-    usd: 10,
-    desc: 'One-time brand setup: logo guidelines, color palette (Special Elite typewriter font included), family chrome ("A Apixis Company" badge).',
-  },
-  {
-    key: "launchixis.seat.monthly",
-    name: "Launch Ops Seat",
-    ixis: 10000,
-    usd: 100,
-    recurring: true,
-    desc: "Monthly. One dedicated launch operator managing your product's board, checklist progress, blockers log, and Cixy launch AI access. Priority support from awad@apixis.dev.",
-    featured: true,
-  },
-  {
-    key: "launchixis.suite.monthly",
-    name: "Enterprise Launch Suite",
-    ixis: 30000,
-    usd: 300,
-    recurring: true,
-    desc: "Monthly. Full-service launch operations for 3+ sister companies simultaneously. Includes multi-board view, family-wide GTM sequencing, shared Cixy context.",
-  },
-];
-
-function RedeemButton({ product }) {
-  // Not on sale: every SKU here would take Ixis and deliver nothing yet — provision() is a no-op
-  // and there is no file, seat or access behind any key. Sells the day the product is defined.
-  return (
-    <div>
-      <button type="button" disabled className="btn ghost" aria-disabled="true">
-        Not on sale yet · {product.ixis.toLocaleString()} Ixis
-      </button>
-      <p className="muted" style={{ marginTop: 8, fontSize: "0.9em" }}>
-        We only take Ixis for things you can use today. {product.name} opens when it is ready.
-      </p>
-    </div>
-  );
-}
-
 export default function PricingPage() {
-  return (
-    <div className="shell">
-      <header className="top">
-        <div>
-          <div className="logo">LAUNCHIXIS</div>
-          <h1>Pricing in Ixis Points</h1>
-          <p className="lede">
-            100 Ixis = $1. Buy Ixis in Apixis Wallet, redeem here. Paid Ixis
-            never expires.
-          </p>
-        </div>
-        <div className="row">
-          <ApixisWalletChip className="lede" />
-          <a className="btn" href={buyHref} style={{ textDecoration: "none" }}>
-            Buy Ixis
-          </a>
-          <a
-            className="btn ghost"
-            href={walletHref}
-            style={{ textDecoration: "none" }}
-          >
-            Open Wallet
-          </a>
-        </div>
-      </header>
-
-      <div className="pricing-grid">
-        {PRODUCTS.map((product) => (
-          <div key={product.key} className={`pricing-card${product.featured ? " featured" : ""}`}>
-            <h2>{product.name}</h2>
-            <div className="price">
-              <span className="ixis">
-                {product.ixis.toLocaleString()} Ixis{product.recurring ? "/mo" : ""}
-              </span>
-              <span className="usd">≈ ${product.usd}{product.recurring ? "/mo" : ""}</span>
-            </div>
-            <p className="pricing-desc">{product.desc}</p>
-            <RedeemButton product={product} />
-          </div>
-        ))}
-      </div>
-
-      <div className="pricing-notes">
-        <h3>About Ixis Points</h3>
-        <ul>
-          <li>
-            <strong>100 Ixis = $1 USD</strong> — stable conversion rate
-          </li>
-          <li>
-            <strong>Paid Ixis never expires</strong> — use them across every
-            Apixis-family product
-          </li>
-          <li>
-            <strong>Buy in Apixis Wallet</strong> — one account, all companies.
-            Purchase via card at{" "}
-            <a href={buyHref}>apixis-wallet.vercel.app</a>
-          </li>
-          <li>
-            <strong>Redeem here</strong> — sign in, click Redeem. If you don't
-            have enough Ixis, you'll be sent to Buy.
-          </li>
-          <li>
-            <strong>No Launchixis-owned Stripe Checkout</strong> — all payments
-            flow through Apixis Wallet for family-wide point tracking
-          </li>
-        </ul>
-      </div>
-
-      <footer className="foot">
-        <span>LAUNCHIXIS · A Apixis Company</span>
-        <span>
-          <a href="/">← Back to board</a>
-        </span>
-      </footer>
-    </div>
-  );
+  const [product,setProduct] = useState(null), [error,setError] = useState(""), [busy,setBusy] = useState(false);
+  const attempt = useRef(null);
+  const refresh = useCallback(async()=>{
+    try { const res = await fetch("/api/product",{cache:"no-store"}); const data=await res.json(); if(!res.ok) throw new Error(data.error); setProduct(data); setError(""); }
+    catch(e){setError(e.message);}
+  },[]);
+  useEffect(()=>{ void refresh(); },[refresh]);
+  async function buy() {
+    if(busy) return; setBusy(true); setError("");
+    try {
+      attempt.current ||= sessionStorage.getItem("lx-checklist-attempt") || crypto.randomUUID();
+      sessionStorage.setItem("lx-checklist-attempt",attempt.current);
+      const res=await fetch("/api/redeem",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({productKey:CHECKLIST_PRODUCT,attemptId:attempt.current})});
+      const data=await res.json();
+      if(!res.ok){
+        if(res.status===402 || (res.status===409 && data.error?.includes("released"))) { sessionStorage.removeItem("lx-checklist-attempt"); attempt.current=null; }
+        throw new Error(data.error || "Purchase status is unavailable. Retry to check the same purchase safely.");
+      }
+      sessionStorage.removeItem("lx-checklist-attempt"); attempt.current=null;
+      setProduct(prev=>({...prev,owned:true}));
+    } catch(e) {setError(e.message);} finally {setBusy(false);}
+  }
+  return <main className="shell"><header className="top"><div><div className="logo">LAUNCHIXIS</div><h1>Launch Checklist</h1><p className="lede">One company. A practical plan you can keep and work through.</p></div><ApixisWalletChip /></header>
+    <section className="panel"><h2>Launch Checklist Template</h2><p className="price">{product ? `${product.price.toLocaleString()} Ixis · one-time purchase` : "Checking price…"}</p>
+      <ul><li>Downloadable 13-step launch guide with actions and evidence for every milestone.</li><li>One private company workspace with an editable checklist, status, and notes.</li><li>Launch advice from Cixy and access to the support queue.</li></ul>
+      <p>This is a planning tool. It does not include an operator, brand design, deployment work, or guaranteed launch results. Your workspace is accessible to you and Launchixis administrators.</p>
+      {error && <p className="err" role="alert">{error}</p>}
+      {product?.owned ? <p role="status">Your checklist is ready. <a className="btn" href="/api/checklist">Download guide</a> <a className="btn ghost" href="/">Open workspace</a></p> : product?.signedIn ? <button className="btn" disabled={busy} onClick={buy}>{busy ? "Checking your purchase…" : `Unlock for ${product.price.toLocaleString()} Ixis`}</button> : product ? <a className="btn" href="/auth/apixis/start?next=%2Fpricing">Sign in with Apixis to purchase</a> : <button className="btn ghost" onClick={refresh}>Retry price check</button>}
+      <p>Payment uses your shared Apixis Wallet. Already purchased? <button className="btn ghost" disabled={busy} onClick={refresh}>Refresh access</button></p>
+      <a href={buyHref}>Buy Ixis in Apixis Wallet</a>
+    </section>
+    <p>Brand kits, operator seats, and enterprise services are not on sale. We will offer them when their delivery workflows are ready.</p>
+    <nav className="row"><a href="/">Workspace</a><a href="/support">Support</a><a href="/feed">Feed</a></nav><footer className="foot">LAUNCHIXIS · A Apixis Company</footer>
+  </main>;
 }
