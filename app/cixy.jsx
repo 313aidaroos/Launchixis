@@ -10,6 +10,11 @@ export default function Cixy() {
   const [open, setOpen] = useState(false);
   const [launch, setLaunch] = useState(null);
   const conversation = useRef(0);
+  const inputRef = useRef(null);
+  const triggerRef = useRef(null);
+  function closeChat(){setOpen(false);triggerRef.current?.focus();}
+  useEffect(()=>{const show=()=>{triggerRef.current=document.activeElement;setOpen(true);};window.addEventListener("launchixis:open-cixy",show);return()=>window.removeEventListener("launchixis:open-cixy",show);},[]);
+  useEffect(()=>{if(open)inputRef.current?.focus();},[open]);
   useEffect(() => {
     const select = event => { conversation.current += 1; setLaunch(event.detail); setMessages([]); setError(""); setLoading(false); };
     window.addEventListener("launchixis:selection", select);
@@ -18,7 +23,7 @@ export default function Cixy() {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
   };
 
   useEffect(() => {
@@ -67,20 +72,22 @@ export default function Cixy() {
       <button
         className="cixy-toggle"
         data-floating-widget="true"
-        onClick={() => setOpen(!open)}
+        onClick={e => { if(open)closeChat();else{triggerRef.current=e.currentTarget;setOpen(true);} }}
+        aria-expanded={open}
+        aria-controls="cixy-chat"
         aria-label="Toggle Cixy chat"
       >
-        {open ? "✕" : "Cixy"}
+        <img src="/brand/cixy-avatar.webp" alt=""/><span>{open ? "Close Cixy" : "Ask Cixy"}</span>
       </button>
 
       {open && (
-        <div className="cixy-chat">
+        <div className="cixy-chat" id="cixy-chat" role="dialog" aria-label="Chat with Cixy" onKeyDown={e=>{if(e.key==="Escape")closeChat();}}>
           <div className="cixy-header">
-            <h3>Cixy · Launch Ops AI</h3>
+            <h3>Cixy · Your launch copilot</h3><button className="cixy-close" onClick={closeChat} aria-label="Close Cixy">×</button>
             <p>{launch ? `Planning for ${launch.name}` : "Launch strategy, waitlists, positioning, GTM sequencing"}</p>
           </div>
 
-          <div className="cixy-messages">
+          <div className="cixy-messages" role="log" aria-live="polite">
             {messages.length === 0 && (
               <div className="cixy-welcome">
                 <p>
@@ -110,7 +117,7 @@ export default function Cixy() {
 
             {error && (
               <div className="cixy-error">
-                Error: {error}
+                {error}<p><a href="/login">Sign in</a> · <a href="/pricing">Checklist access</a></p>
               </div>
             )}
 
@@ -119,6 +126,9 @@ export default function Cixy() {
 
           <form onSubmit={handleSubmit} className="cixy-form">
             <input
+              ref={inputRef}
+              aria-label="Message Cixy"
+              maxLength={2000}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}

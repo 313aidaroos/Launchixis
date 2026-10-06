@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ApixisWalletChip } from "@/components/ApixisWalletChip";
+
 
 export default function SupportPage() {
   const [form, setForm] = useState({
@@ -61,9 +61,7 @@ export default function SupportPage() {
             Have a question or need help? Send a request to the Launchixis support queue. An administrator will review it.
           </p>
         </div>
-        <div className="row">
-          <ApixisWalletChip />
-        </div>
+
       </header>
 
       {sent && (
@@ -84,7 +82,7 @@ export default function SupportPage() {
 
       {!sent && (
         <form onSubmit={handleSubmit} className="support-form">
-          {error && <p className="err">{error}</p>}
+          {error && <p className="err" role="alert">{error}</p>}
           
           <div>
             <label htmlFor="email">Your email</label>
@@ -106,6 +104,7 @@ export default function SupportPage() {
               type="text"
               value={form.subject}
               onChange={(e) => update("subject", e.target.value)}
+              maxLength={200}
               placeholder="What do you need help with?"
               disabled={loading}
               required
@@ -118,6 +117,7 @@ export default function SupportPage() {
               id="message"
               value={form.message}
               onChange={(e) => update("message", e.target.value)}
+              maxLength={5000}
               placeholder="Describe your issue or question in detail…"
               disabled={loading}
               required
@@ -142,9 +142,8 @@ export default function SupportPage() {
 
       <div className="support-footer">
         <p style={{ color: "var(--dim)", fontSize: 14, marginBottom: 12 }}>
-          Support inbox: <strong style={{ color: "var(--text)" }}>launchixis@apixis.dev</strong>
-          <br />
-          Routes to: <strong style={{ color: "var(--text)" }}>awad@apixis.dev</strong>
+          Contact email: <strong style={{ color: "var(--text)" }}>launchixis@apixis.dev</strong>
+
         </p>
         <a href="/">← Back to board</a>
       </div>

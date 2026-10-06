@@ -38,20 +38,20 @@ test("open wallet keeps origin and return without forcing the buy tab", () => {
   );
 });
 
-test("pricing and board no longer cite wallet.apixis.dev", () => {
+test("pricing and shared navigation use the approved Wallet host", () => {
   const pricing = readFileSync(
     new URL("../app/pricing/page.jsx", import.meta.url),
     "utf8"
   );
-  const board = readFileSync(
-    new URL("../app/board.jsx", import.meta.url),
+  const navigation = readFileSync(
+    new URL("../components/StudioShell.jsx", import.meta.url),
     "utf8"
   );
   const cixy = readFileSync(new URL("../lib/cixy.js", import.meta.url), "utf8");
   assert.equal(pricing.includes("wallet.apixis.dev"), false);
   assert.equal(pricing.includes("Wallet connecting"), false);
-  assert.equal(board.includes("wallet.apixis.dev"), false);
+  assert.equal(navigation.includes("wallet.apixis.dev"), false);
   assert.equal(cixy.includes("wallet.apixis.dev"), false);
   assert.match(pricing, /walletBuyUrl\("\/pricing"\)/);
-  assert.match(board, /walletBuyUrl\("\/"\)/);
+  assert.match(navigation, /walletBuyUrl\("\/"\)/);
 });
