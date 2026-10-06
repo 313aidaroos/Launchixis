@@ -51,4 +51,4 @@ function CompaniesDirectory({ host }) {
   );
 }
 
-export default function CompaniesPage(){return <><header className="launch-family-header"><a href="/" className="logo">LAUNCHIXIS</a><nav aria-label="Main navigation"><a href="/">Launch board</a><a href="/pricing">Pricing</a><a href="/companies" aria-current="page">Apixis Companies</a></nav></header><CompaniesDirectory host="launchixis" /></>}
+export default function CompaniesPage(){return <main><CompaniesDirectory host="launchixis" /></main>}

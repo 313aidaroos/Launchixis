@@ -45,7 +45,7 @@ export default function LoginPage() {
       <header className="top">
         <div>
           <div className="logo">LAUNCHIXIS</div>
-          <h1>Sign In</h1>
+          <h1>Welcome to your<br/><em>next chapter.</em></h1>
           <SignInWithApixis />
           <p className="lede">
             Magic link login for existing accounts. Enter your email — we'll send you a
@@ -85,7 +85,7 @@ export default function LoginPage() {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="login-form">
-          {error && <p className="err">{error}</p>}
+          {error && <p className="err" role="alert">{error}</p>}
           <div>
             <label htmlFor="email">Email address</label>
             <input
