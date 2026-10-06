@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SignInWithApixis } from "@/components/SignInWithApixis";
 
 export default function LoginPage() {
@@ -8,6 +8,10 @@ export default function LoginPage() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("error")) setError("Your sign-in link expired or could not be verified. Please sign in again.");
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -20,7 +24,7 @@ export default function LoginPage() {
       const response = await fetch("/api/auth/magic-link", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: email.trim(), next: new URLSearchParams(window.location.search).get("next") }),
       });
 
       if (!response.ok) {

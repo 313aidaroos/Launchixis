@@ -1,37 +1,21 @@
 import Board from "./board.jsx";
-import { db, ensureSeed, publicLaunch } from "../lib/db.js";
-
+import { currentUser, isVerifiedAdmin } from "../lib/server-auth.js";
+import { SignInWithApixis } from "../components/SignInWithApixis";
 export const dynamic = "force-dynamic";
-
-async function loadLaunches() {
-  const client = db();
-  await ensureSeed(client);
-  const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const res = await fetch(
-    `${url}/rest/v1/launches?select=*&order=name.asc&limit=100`,
-    {
-      headers: {
-        apikey: key,
-        Authorization: `Bearer ${key}`,
-        Prefer: "count=exact",
-      },
-      cache: "no-store",
-    }
-  );
-  if (!res.ok) {
-    throw new Error(`launches_fetch_${res.status}`);
-  }
-  const data = await res.json();
-  return (data || []).map(publicLaunch);
-}
-
 export default async function Page() {
-  // A database hiccup should not take the whole board down: the board reloads
-  // from /api/launches in the browser and shows its own error there.
-  const initialLaunches = await loadLaunches().catch((e) => {
-    console.error("launches_initial_load_failed", e?.message ?? e);
-    return [];
-  });
-  return <Board initialLaunches={initialLaunches} />;
+  const user = await currentUser();
+  if (user?.email_confirmed_at) return <Board admin={isVerifiedAdmin(user)} />;
+  return <main className="shell">
+    <header className="top"><div><div className="logo">LAUNCHIXIS</div><h1>Your company. <em>Your launch.</em></h1>
+      <p className="lede">Build a clear launch plan in a private workspace. Work through 13 milestones, record evidence, and get launch advice from Cixy.</p>
+      <SignInWithApixis next="/" />
+    </div></header>
+    <section className="panel"><h2>From idea to a launch you can verify</h2>
+      <ol><li>Sign in with your Apixis ID and create your company workspace.</li><li>Unlock the Launch Checklist for 1,000 Ixis, one time.</li><li>Download your guide, edit your private checklist, and record progress.</li></ol>
+      <p>Your workspace is visible to you and Launchixis administrators. The Apixis operations board is private to administrators.</p>
+      <a className="btn" href="/pricing">See the checklist</a>
+    </section>
+    <nav className="row" aria-label="Explore"><a href="/companies">Apixis Companies</a><a href="/feed">Community feed</a><a href="/support">Support</a><a href="/login">Existing account sign in</a></nav>
+    <footer className="foot">LAUNCHIXIS · A Apixis Company</footer>
+  </main>;
 }

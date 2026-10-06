@@ -8,6 +8,13 @@ export default function Cixy() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [open, setOpen] = useState(false);
+  const [launch, setLaunch] = useState(null);
+  const conversation = useRef(0);
+  useEffect(() => {
+    const select = event => { conversation.current += 1; setLaunch(event.detail); setMessages([]); setError(""); setLoading(false); };
+    window.addEventListener("launchixis:selection", select);
+    return () => window.removeEventListener("launchixis:selection", select);
+  }, []);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -23,6 +30,7 @@ export default function Cixy() {
     if (!input.trim()) return;
 
     const userMsg = input.trim();
+    const generation = conversation.current;
     setInput("");
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
     setLoading(true);
@@ -32,7 +40,7 @@ export default function Cixy() {
       const response = await fetch("/api/cixy", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ message: userMsg }),
+        body: JSON.stringify({ message: userMsg, history: messages.slice(-8), launchId: launch?.id }),
       });
 
       if (!response.ok) {
@@ -41,14 +49,16 @@ export default function Cixy() {
       }
 
       const data = await response.json();
+      if (generation !== conversation.current) return;
       setMessages((prev) => [...prev, { role: "assistant", text: data.text }]);
     } catch (err) {
+      if (generation !== conversation.current) return;
       setError(err.message);
       setMessages((prev) =>
         prev.slice(0, -1)
       );
     } finally {
-      setLoading(false);
+      if (generation === conversation.current) setLoading(false);
     }
   }
 
@@ -56,6 +66,7 @@ export default function Cixy() {
     <div className="cixy-container">
       <button
         className="cixy-toggle"
+        data-floating-widget="true"
         onClick={() => setOpen(!open)}
         aria-label="Toggle Cixy chat"
       >
@@ -66,7 +77,7 @@ export default function Cixy() {
         <div className="cixy-chat">
           <div className="cixy-header">
             <h3>Cixy · Launch Ops AI</h3>
-            <p>Launch strategy, waitlists, positioning, GTM sequencing</p>
+            <p>{launch ? `Planning for ${launch.name}` : "Launch strategy, waitlists, positioning, GTM sequencing"}</p>
           </div>
 
           <div className="cixy-messages">

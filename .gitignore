@@ -7,3 +7,9 @@ node_modules
 .vercel-project.json
 *.log
 .DS_Store
+
+*.tsbuildinfo
+next-env.d.ts
+supabase/.temp/
+test-results/
+playwright-report/

@@ -45,3 +45,9 @@ Entry format:
 ## 2026-10-04 — Grok (Launchixis Lead)
 - Changed: `lib/cixy.js`. The anthropic-version header is now 2023-06-01 (was invalid 2024-06-15), the model reads AI_MODEL then ANTHROPIC_MODEL then claude-sonnet-5, and replies join text blocks only.
 - Why: Cixy answered "resting" on every call because Anthropic returned 400 for the bad version header.
+
+## 2026-10-05 — Codex: private workspaces and customer checklist delivery
+
+Owner requested the assessment improvements and merge. Added a private admin operations board and one owner-scoped customer workspace; preserved existing family records as admin-only. Fixed the email callback external redirect and failed-session handling. Upgraded Next.js/React and replaced vulnerable lint dependencies; added lint/typecheck, redirect, ownership, SQL, payment-recovery and production-route integration checks. Implemented the existing 1,000-Ixis checklist product with a durable downloadable guide, Wallet entitlements, idempotent purchase recovery, and versioned saves. Added admin support intake/status queue with in-app alerts and truthful receipt messaging. Cixy now uses authorized launch context and bounded conversation history; limits are atomic in Supabase. Removed automatic seeding from reads and documented rollout/recovery. Other SKUs remain disabled until their actual services exist. Shared Wallet SDK and prices unchanged.
+
+- Release verification: customer browser flow passed with an isolated fake Wallet; migration applied with 14 internal launches and 3 support tickets preserved. CI uses existing shared workflow hooks (unit + SQL tests, build, HTTP integration and audit). Wrapped workspace navigation to keep controls visible on narrow screens.
