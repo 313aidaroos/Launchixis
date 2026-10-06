@@ -58,3 +58,8 @@ Owner requested the assessment improvements and merge. Added a private admin ope
 - Changed: organized the existing customer checklist into four stages with real progress, next-step guidance, notes and guide downloads. Preserved saves, checkout, authentication and owner isolation; protected unsaved edits when switching or reloading workspaces.
 - Preserved: all 15 Apixis company entries and their original artwork/crop mappings. Shared Wallet/login SDKs, prices and database behavior remain unchanged.
 - Why: owner approved the colorful design and requested consistent pages, embedded logo without a square, Cixy presence, retained company images, verification and merge.
+
+## 2026-10-05 — Codex: company artwork without SVG badges
+
+- Changed: removed the SVG badges and unused decorative orbit/spark markup from company cards at the owner's request. Original company images remain intact.
+- Animation status: prepared five image references for Higgsfield; all five generation submissions were rejected for insufficient credits. Zero video jobs were created. No placeholder videos or simulated SVG animations were added.
